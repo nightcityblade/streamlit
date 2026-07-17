@@ -75,6 +75,8 @@ This repository includes skills and subagents in `.claude/` usable with Claude C
 | `generating-changelog` | When preparing release notes between two git tags |
 | `improving-frontend-coverage` | When you want to systematically improve frontend test coverage with high-value test cases |
 | `improving-python-coverage` | When you want to systematically improve Python test coverage with high-value test cases |
+| `reproducing-issues` | When given a GitHub issue to reproduce, triage, or verify — investigates read-only and produces a repro bundle (app, notes, evidence) |
+| `publishing-issue-repros` | When publishing a repro bundle to the st-issues repo (deploys to issues.streamlit.app) |
 
 ### Subagents
 
