@@ -38,6 +38,9 @@ NEW_SESSION_MSG.new_session.config.allow_run_on_save = True
 PAGE_INFO_CHANGED_MSG = ForwardMsg()
 PAGE_INFO_CHANGED_MSG.page_info_changed.query_string = "foo=bar"
 
+HEARTBEAT_ACK_MSG = ForwardMsg()
+HEARTBEAT_ACK_MSG.heartbeat_ack = True
+
 TEXT_DELTA_MSG1 = ForwardMsg()
 TEXT_DELTA_MSG1.delta.new_element.text.body = "text1"
 TEXT_DELTA_MSG1.metadata.delta_path[:] = make_delta_path(RootContainer.MAIN, (), 0)
@@ -277,6 +280,17 @@ class ForwardMsgQueueTest(unittest.TestCase):
         assert NEW_SESSION_MSG in fmq._queue
         assert TOAST_DELTA_MSG in fmq._queue
         assert TEXT_DELTA_MSG1 not in fmq._queue
+
+    def test_clear_retains_heartbeat_ack(self):
+        """Heartbeat acknowledgements survive a lifecycle-retaining clear."""
+        fmq = ForwardMsgQueue()
+
+        fmq.enqueue(TEXT_DELTA_MSG1)
+        fmq.enqueue(HEARTBEAT_ACK_MSG)
+
+        fmq.clear(retain_lifecycle_msgs=True)
+
+        assert fmq._queue == [HEARTBEAT_ACK_MSG]
 
     def test_clear_retains_toast_deltas_during_fragment_rerun(self):
         """Toast deltas survive a fragment-scoped lifecycle-retaining clear.

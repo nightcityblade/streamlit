@@ -138,6 +138,7 @@ class ForwardMsgQueue:
                     "session_status_changed",
                     "parent_message",
                     "page_info_changed",
+                    "heartbeat_ack",
                 }
                 # Toasts are one-shot notifications that must survive the queue
                 # clear happening when a run is interrupted (e.g. st.toast()
